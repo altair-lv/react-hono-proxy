@@ -3,9 +3,20 @@ import { HTTPException } from 'hono/http-exception';
 import { logger } from 'hono/logger';
 import { timing } from 'hono/timing';
 import { prettyJSON } from 'hono/pretty-json';
+import { cors } from 'hono/cors';
+
 import users from './routes/users.route';
 
 const app = new Hono();
+
+app.use(
+  '*',
+  cors({
+    origin: ['http://localhost:5173'],
+    allowHeaders: ['Content-Type', 'Authorization'],
+    allowMethods: ['GET', 'POST', 'PUT', 'DELETE'],
+  })
+);
 
 app.use(logger(), timing(), prettyJSON());
 
